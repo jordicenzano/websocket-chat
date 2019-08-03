@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+ Test code for web sockets from Jordi Cenzano
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="WebSocket chat example">
+    <meta name="author" content="Jordi Cenzano">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta itemprop="description" content="Example of how to use WebSockets for a web chat">
+    <meta itemprop="name" content="WebSocket chat example">
+    <meta itemprop="image" content="./pics/icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta id="theme-color" name="theme-color" content="#ffffff">
+
+    <title>WebSocket chat demo</title>
+
+    <link rel="icon" sizes="192x192" href="./pics/icon.png">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+        
+<div class="container">
+    <div class="jumbotron">
+        <h1>WebSocket chat demo</h1>
+        <p>This sample shows how to broadcast "instant" mesages across browsers / clients using WebSockets.</p>
+        <p>You need to choose a room name to connect and your messages will be broadcasted to clients connected to the same room name.</p>
+        <p>Remember you need to run the backend code in some server (or <code>localhost</code>), See <a href="../README.md">README</a></p>
+    </div>
+    
+    <div class="container">
+        <div id="errorMessages"></div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Connection settings</h5>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="wsserverLabel">WS Server URL</span>
+                        </div>
+                        <input id="wsserver" type="text" class="form-control" placeholder="ws://localhost:8080" aria-label="WS Server URL" aria-describedby="wsserverLabel">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="roomidLabel">Room ID</span>
+                        </div>
+                        <input id="roomid" type="text" class="form-control" placeholder="MyRoomID" aria-label="Room ID" aria-describedby="roomidLabel">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="myidLabel">Name</span>
+                        </div>
+                        <input id="myid" type="text" class="form-control" placeholder="My name" aria-label="Name" aria-describedby="myidLabel">
+                    </div>
+                    <button id="connectButton" type="submit" class="btn btn-primary" onclick="toggleConnection()">Connect!</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <label for="room">Room messages</label>
+                <textarea id="room" class="form-control" rows="10" aria-describedby="roomHelp" readonly></textarea>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" class="form-control" rows="4"></textarea>
+                </div>
+                <button id = "sendButton" type="submit" class="btn btn-primary" onclick="sendMessage()" disabled>Send message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="js/main.js" async></script>
+
+</body>
+</html>

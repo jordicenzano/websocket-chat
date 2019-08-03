@@ -1,0 +1,29 @@
+{
+    "name": "RTC-call-example",
+    "version": "1.0.0",
+    "description": "",
+    "private": true,
+    "main": "src/server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "call",
+        "WebRTC",
+        "video",
+        "audio",
+        "conferencing"
+    ],
+    "author": "Jordi Cenzano",
+    "license": "",
+    "devDependencies": {},
+    "dependencies": {
+        "@types/shelljs": "^0.8.5",
+        "@types/uuid": "^3.4.5",
+        "@types/ws": "^6.0.1",
+        "shelljs": "^0.8.3",
+        "typescript": "^3.5.3",
+        "uuid": "^3.3.2",
+        "ws": "^7.1.1"
+    }
+}
