@@ -25,9 +25,9 @@ npm install
 # Test it
 1. Start the backend webSocket server code in a place where the clients can reach, for instance:
 ```
-ts-node ./server/src/ws-chat-server.ts
+ts-node ./server/src/ws-chat-server.ts -p 8080
 ```
-The previous command will run the server in your computer on port 8080 (default)
+The previous command will run the server in your computer on port 8080
 
 2. Load this webpage in your device [WebSocketChat](https://jordicenzano.github.io/websocket-chat/index.html)
 
