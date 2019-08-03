@@ -31,9 +31,13 @@ The previous command will run the server in your computer on port 8080 (default)
 
 2. Load this webpage in your device [WebSocketChat](https://jordicenzano.github.io/websocket-chat/index.html)
 
-3. Type `ws://localhost:8080` (OR your server location) as `WS Server URL`
+3. Type `ws://localhost:8080` (OR your server location) as `WS Server URL` (*)
 4. Type `myroom` (OR the room name you want) in `Room ID`
 5. Type  `RANDOM` (OR the ID you want) in `Name`
 6. Press the "Connect" button
 7. Repeat steps 2 to 6 with as many clients as you want
 8. Send a messages
+
+Tested with Chrome in MACOS.
+
+(*) Some browsers (like Safari) can throw an error if you try to connect an NON encrypted WebSocket (ws:) from a HTTPS page.
