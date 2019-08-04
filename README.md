@@ -17,9 +17,11 @@ npm install -g typescript
 ```
 git clone git@github.com:jordicenzano/websocket-chat.git
 ```
-3. Install packages (from the app directory)
+3. Install packages
 ```
+cd server
 npm install
+cd ..
 ```
 
 # Test it
