@@ -70,7 +70,7 @@ function parseArgs(argvs:string[]) {
     };
 
     let n = 2;
-    while (n < argvs.length - 2) {
+    while (n < argvs.length - 1) {
         if (argvs[n] === '-h') {
             ret.printHelp = true;
             n = n + 1;
