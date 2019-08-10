@@ -23,6 +23,12 @@ cd server
 npm install
 cd ..
 ```
+4. (ONLY if you want to use the secure version)Create self signed certificate and key running:
+```
+cd server/scripts
+./createSelfSignedCert.sh
+cd ../..
+```
 
 # Test it
 1. Start the backend webSocket server code in a place where the clients can reach, for instance:

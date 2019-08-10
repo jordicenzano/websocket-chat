@@ -1,3 +1,5 @@
 .DS_Store
+*.crt
+*.pem
 server/node_modules/
 server/built/

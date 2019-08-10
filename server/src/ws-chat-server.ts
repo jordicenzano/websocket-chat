@@ -8,6 +8,8 @@ import { exit } from 'shelljs';
 import * as WebSocket from 'ws';
 import { IncomingMessage } from 'http';
 import * as uuidv4 from 'uuid/v4';
+import * as https from 'https';
+import * as fs from 'fs';
 
 'use strict'
 
@@ -15,8 +17,11 @@ import * as uuidv4 from 'uuid/v4';
 const VERSION:string = '1.0.0';
 const APP_NAME = 'ws-chat-server.ts';
 
-// Default port
+// Defaults
 const DEF_PORT = 8080;
+const DEF_IS_SECURE = false;
+const DEF_SECURE_KEY_PATH = './key.pem';
+const DEF_SECURE_CERT_PATH = './cert.crt';
 
 // Extended websocket definition
 interface WebSocketExt extends WebSocket {
@@ -28,6 +33,10 @@ interface WebSocketExt extends WebSocket {
 interface parsedArgsStruct {
     // Optional params
     printHelp:boolean;
+    useSecure:boolean;
+
+    keyPath:string;
+    certPath:string;
     
     port:number;
 }
@@ -51,7 +60,10 @@ function printUsage ():void {
     console.log(`Example: ${APP_NAME} -p 8080`);
     console.log(`\nOptions:
 -h Show help
--p port of the webserver (default: ${DEF_PORT})`);
+-p port of the webserver (default: ${DEF_PORT})
+-s Use secure connection (default: ${DEF_IS_SECURE})
+-sk Key file if you use secure connection ${DEF_SECURE_KEY_PATH})
+-sc Certificate file if you use secure connection ${DEF_SECURE_CERT_PATH})`);
 }
 
 function printError(msg:string): void {
@@ -66,7 +78,10 @@ function parseArgs(argvs:string[]) {
     const ret:parsedArgsStruct = {
         printHelp: false,
         
-        port: DEF_PORT
+        port: DEF_PORT,
+        useSecure: DEF_IS_SECURE,
+        keyPath: DEF_SECURE_KEY_PATH,
+        certPath: DEF_SECURE_CERT_PATH
     };
 
     let n = 2;
@@ -79,6 +94,18 @@ function parseArgs(argvs:string[]) {
             ret.port = parseInt(argvs[n + 1]);
             n = n + 2;
         }
+        else if (argvs[n] === '-s'){
+            ret.useSecure = true;
+            n = n + 1;
+        }
+        else if (argvs[n] === '-sk'){
+            ret.keyPath = argvs[n + 1];
+            n = n + 2;
+        }
+        else if (argvs[n] === '-sc'){
+            ret.certPath = argvs[n + 1];
+            n = n + 2;
+        }
         else {
             n++;
         }
@@ -88,8 +115,27 @@ function parseArgs(argvs:string[]) {
 }
 
 // Starts WS server
-function startWebSocketRepeaterServer(port:number):WebSocket.Server {
-    const wsServer = new WebSocket.Server({ port: port });
+function startWebSocketRepeaterServer(cert:string, key:string, port:number):WebSocket.Server {
+    let wsServer = null;
+    let isSecure = false;
+
+    if ((cert !== '') && (key !== '')) {
+        // Use secure connection
+        const httpsServerConf = {
+            cert: cert,
+            key: key,
+        }
+
+        const server = https.createServer(httpsServerConf);
+        server.listen(port);
+
+        wsServer = new WebSocket.Server({server: server});
+
+        isSecure = true;
+    }
+    else {
+        wsServer = new WebSocket.Server({port: port});
+    }
 
     wsServer.on('connection', function (newWs:WebSocketExt, req:IncomingMessage) {
         newWs.name = uuidv4();
@@ -100,7 +146,7 @@ function startWebSocketRepeaterServer(port:number):WebSocket.Server {
         printLog(`Connection ${newWs.name} added to the pool, new pool size ${size}`);
     });
 
-    printLog(`WS server listening on port ${port}`);
+    printLog(`WS server listening on port ${port} secure: ${isSecure}`);
 
     return wsServer
 }
@@ -224,4 +270,12 @@ if (parsedArgs.printHelp) {
   exit(0);
 }
 
-wsServer = startWebSocketRepeaterServer(parsedArgs.port);
+if (parsedArgs.useSecure) {
+    const cert = fs.readFileSync(parsedArgs.certPath).toString();
+    const key = fs.readFileSync(parsedArgs.keyPath).toString();
+
+    wsServer = startWebSocketRepeaterServer(cert, key, parsedArgs.port);
+}
+else {
+    wsServer = startWebSocketRepeaterServer("","", parsedArgs.port);
+}

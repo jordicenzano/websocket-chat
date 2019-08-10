@@ -15,6 +15,18 @@
                 "${workspaceFolder}/server/built/**/*.js"
             ],
             "args": [""]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "START Server secure",
+            "cwd":"${workspaceFolder}/server",
+            "program": "${workspaceFolder}/server/src/ws-chat-server.ts",
+            "preLaunchTask": "tsc: build - server/tsconfig.json",
+            "outFiles": [
+                "${workspaceFolder}/server/built/**/*.js"
+            ],
+            "args": ["-s","-p", "8443"]
         }
     ]
 }
